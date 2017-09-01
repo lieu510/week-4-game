@@ -93,12 +93,21 @@ $(document).ready(function () {
             var defCharStats = maulChar;
         }
 
-        defCharStats.healthPoints -= myChar.attackPower x attack;
-        
-        myChar.healthPoints -= defChar.attackPower;
+        var attackDamage = charStats.attackPower * attack;
+        defCharStats.healthPoints -= attackDamage;
+        attack++;
+        $("#defender").find("span").text("HP: " + defCharStats.healthPoints);
+        charStats.healthPoints -= defCharStats.counterAttackPower;
+        $("#character").find("span").text("HP: " + charStats.healthPoints);
+
+        $("#action").text("You've delt " + attackDamage + " damage and received " + defCharStats.counterAttackPower + " damage.");
 
         if (charStats.healthPoints <= 0) {
-            alert("You're Dead...");
+            alert("You've been defeated...");
+            location.reload();
+        } else if (defCharStats.healthPoints <= 0) {
+            alert("Enemy defeated...");
+            $("#defender").children().detach();
         }
     });
 });
