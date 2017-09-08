@@ -1,4 +1,29 @@
-.character, .enemies {
+#game {
+    background-image: url("../images/background.jpg");
+    background-repeat: no-repeat;
+    height: 675px;
+}
+
+img {
+    height: 120px;
+}
+
+#character > div {
+    background-color: blue;
+    color: white;
+    width: 120px;
+    text-align: center;
+}
+
+.character {
     display: inline-block;
     margin: 3px;
+}
+
+.enemies {
+    display: inline-block;
+    margin: 3px;
+    background-color: red;
+    width: 120px;
+    text-align: center;
 }

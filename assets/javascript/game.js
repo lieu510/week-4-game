@@ -2,45 +2,47 @@ $(document).ready(function () {
 
     var lukeChar = {
         healthPoints: 100,
-        attackPower: 10,
+        attackPower: 12,
         counterAttackPower: 5,
     }
     var obiChar = {
         healthPoints: 120,
         attackPower: 8,
-        counterAttackPower: 15,
+        counterAttackPower: 10,
     }
     var sidiousChar = {
         healthPoints: 150,
-        attackPower: 6,
+        attackPower: 4,
         counterAttackPower: 20,
     }
     var maulChar = {
         healthPoints: 180,
-        attackPower: 5,
+        attackPower: 2,
         counterAttackPower: 25,
     }
 
-    var lukeImg = $("<div>").append($("<img>").attr("src", "assets/images/luke.jpg")).append("<br>").append($("<span>").text("HP: " + lukeChar.healthPoints)).attr("char", "luke");
-    var obiImg = $("<div>").append($("<img>").attr("src", "assets/images/obi.jpg")).append("<br>").append($("<span>").text("HP: " + obiChar.healthPoints)).attr("char", "obi");
-    var sidiousImg = $("<div>").append($("<img>").attr("src", "assets/images/sidious.jpg")).append("<br>").append($("<span>").text("HP: " + sidiousChar.healthPoints)).attr("char", "sidious");
-    var maulImg = $("<div>").append($("<img>").attr("src", "assets/images/maul.jpg")).append("<br>").append($("<span>").text("HP: " + maulChar.healthPoints)).attr("char", "maul");
+    var lukeImg = $("<div>").append($("<span>").text("Luke Skywalker")).append("<br>").append($("<img>").attr("src", "assets/images/luke.jpg")).append("<br>").append($("<span>").text("HP: " + lukeChar.healthPoints).attr("id" , "hp")).attr("char", "luke");
+    var obiImg = $("<div>").append($("<span>").text("Obi Wan Kenobi")).append("<br>").append($("<img>").attr("src", "assets/images/obi.jpg")).append("<br>").append($("<span>").text("HP: " + obiChar.healthPoints).attr("id" , "hp")).attr("char", "obi");
+    var sidiousImg = $("<div>").append($("<span>").text("Darth Sidious")).append("<br>").append($("<img>").attr("src", "assets/images/sidious.jpg")).append("<br>").append($("<span>").text("HP: " + sidiousChar.healthPoints).attr("id" , "hp")).attr("char", "sidious");
+    var maulImg = $("<div>").append($("<span>").text("Darth Maul")).append("<br>").append($("<img>").attr("src", "assets/images/maul.jpg")).append("<br>").append($("<span>").text("HP: " + maulChar.healthPoints).attr("id" , "hp")).attr("char", "maul");
 
     $(".character").on("click", function () {
         var myChar = $(this).attr("char");
         console.log(myChar);
 
+        $("#chooseCharacter").empty();
+
         if (myChar == "luke") {
-            $("#character").empty().append(lukeImg);
+            $("#character").append(lukeImg);
             $("#enemies").append(obiImg.addClass("enemies")).append(sidiousImg.addClass("enemies")).append(maulImg.addClass("enemies"));
         } else if (myChar == "obi") {
-            $("#character").empty().append(obiImg);
+            $("#character").append(obiImg);
             $("#enemies").append(lukeImg.addClass("enemies")).append(sidiousImg.addClass("enemies")).append(maulImg.addClass("enemies"));
         } else if (myChar == "sidious") {
-            $("#character").empty().append(sidiousImg);
+            $("#character").append(sidiousImg);
             $("#enemies").append(lukeImg.addClass("enemies")).append(obiImg.addClass("enemies")).append(maulImg.addClass("enemies"));
         } else if (myChar == "maul") {
-            $("#character").empty().append(maulImg);
+            $("#character").append(maulImg);
             $("#enemies").append(lukeImg.addClass("enemies")).append(obiImg.addClass("enemies")).append(sidiousImg.addClass("enemies"));
         }
 
@@ -69,6 +71,7 @@ $(document).ready(function () {
     var attack = 1;
 
     $("#attack").on("click", function () {
+
         var myChar = $("#character").children().attr("char");
 
         if (myChar == "luke") {
@@ -93,21 +96,37 @@ $(document).ready(function () {
             var defCharStats = maulChar;
         }
 
-        var attackDamage = charStats.attackPower * attack;
-        defCharStats.healthPoints -= attackDamage;
-        attack++;
-        $("#defender").find("span").text("HP: " + defCharStats.healthPoints);
-        charStats.healthPoints -= defCharStats.counterAttackPower;
-        $("#character").find("span").text("HP: " + charStats.healthPoints);
+        if (typeof charStats == "undefined") {
 
-        $("#action").text("You've delt " + attackDamage + " damage and received " + defCharStats.counterAttackPower + " damage.");
+            alert("Choose a character!");
 
-        if (charStats.healthPoints <= 0) {
-            alert("You've been defeated...");
-            location.reload();
-        } else if (defCharStats.healthPoints <= 0) {
-            alert("Enemy defeated...");
-            $("#defender").children().detach();
-        }
+        } else if (typeof defCharStats == "undefined") {
+
+            alert("Choose an enemy to attack!");
+        
+        } else {
+            var attackDamage = charStats.attackPower * attack;
+            defCharStats.healthPoints -= attackDamage;
+            attack++;
+            $("#defender #hp").text("HP: " + defCharStats.healthPoints);
+            
+            if (defCharStats.healthPoints > 0) {
+                charStats.healthPoints -= defCharStats.counterAttackPower;
+                $("#character #hp").text("HP: " + charStats.healthPoints);
+                $("#action").text("You've delt " + attackDamage + " damage and received " + defCharStats.counterAttackPower + " damage.");
+            } else {
+
+                $("#action").text("You've delt " + attackDamage + " damage and defeated the enemy.");
+
+            }
+
+            if (charStats.healthPoints <= 0) {
+                alert("You've been defeated...");
+                location.reload();
+            } else if (defCharStats.healthPoints <= 0) {
+                alert("Enemy defeated...");
+                $("#defender").children().detach();
+            }
+        } 
     });
 });
