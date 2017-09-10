@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+    //Create character stats
     var lukeChar = {
         healthPoints: 100,
         attackPower: 12,
@@ -21,11 +22,13 @@ $(document).ready(function () {
         counterAttackPower: 25,
     }
 
+    //Create character avatars
     var lukeImg = $("<div>").append($("<span>").text("Luke Skywalker")).append("<br>").append($("<img>").attr("src", "assets/images/luke.jpg")).append("<br>").append($("<span>").text("HP: " + lukeChar.healthPoints).attr("id" , "hp")).attr("char", "luke");
     var obiImg = $("<div>").append($("<span>").text("Obi Wan Kenobi")).append("<br>").append($("<img>").attr("src", "assets/images/obi.jpg")).append("<br>").append($("<span>").text("HP: " + obiChar.healthPoints).attr("id" , "hp")).attr("char", "obi");
     var sidiousImg = $("<div>").append($("<span>").text("Darth Sidious")).append("<br>").append($("<img>").attr("src", "assets/images/sidious.jpg")).append("<br>").append($("<span>").text("HP: " + sidiousChar.healthPoints).attr("id" , "hp")).attr("char", "sidious");
     var maulImg = $("<div>").append($("<span>").text("Darth Maul")).append("<br>").append($("<img>").attr("src", "assets/images/maul.jpg")).append("<br>").append($("<span>").text("HP: " + maulChar.healthPoints).attr("id" , "hp")).attr("char", "maul");
 
+    //Allows user to select character.
     $(".character").on("click", function () {
         var myChar = $(this).attr("char");
         console.log(myChar);
@@ -48,6 +51,7 @@ $(document).ready(function () {
 
     });
 
+    //Allows user to select defender.
     $("#enemies").on("click", ".enemies", function () {
         var defender = $(this).attr("char");
         console.log(defender);
@@ -69,7 +73,7 @@ $(document).ready(function () {
     });
 
     var attack = 1;
-
+    //Allows user to attack defener.
     $("#attack").on("click", function () {
 
         var myChar = $("#character").children().attr("char");
@@ -96,11 +100,11 @@ $(document).ready(function () {
             var defCharStats = maulChar;
         }
 
-        if (typeof charStats == "undefined") {
+        if (typeof charStats == "undefined") { //Displays error if no character is chosen.
 
             alert("Choose a character!");
 
-        } else if (typeof defCharStats == "undefined") {
+        } else if (typeof defCharStats == "undefined") { //Displays error if no defender is chosen.
 
             alert("Choose an enemy to attack!");
         
@@ -119,7 +123,7 @@ $(document).ready(function () {
                 $("#action").text("You've delt " + attackDamage + " damage and defeated the enemy.");
 
             }
-
+            //Character or defender is defeated when hp < 0.
             if (charStats.healthPoints <= 0) {
                 alert("You've been defeated...");
                 location.reload();
